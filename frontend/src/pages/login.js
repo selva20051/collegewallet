@@ -1,6 +1,6 @@
 import { useState } from "react";
-// import { login } from "../actions/action";
-import '../css/login.css'
+import '../css/login.css';
+
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -23,6 +23,7 @@ function Login() {
             
             if (body.username === "admin" && body.password === "pass") {
                 localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('username', detail.username);
                 setTimeout(() => {
                     alert('Login successful!');
                     navigate("/")

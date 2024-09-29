@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
+import React from "react";
+
 
 function Menu() {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const username = localStorage.getItem('username');
     return(
-        <>
-            {/* <Header/> */}
-            <div className="container">
-                <h1>username</h1>
-                <h1>balance</h1>
-            </div>
+        <>  
+            
+            
+            <Navbar/>
             <div className="menu">
                 menu
             </div>
