@@ -1,7 +1,8 @@
 // src/components/Logout.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/login.css';
+import '../css/logout.css';
+
 
 function Logout() {
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ function Logout() {
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('username');
         alert('Logged out successfully!');
-        navigate("/login"); 
+        navigate("/"); 
     };
 
     return (

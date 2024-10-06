@@ -1,0 +1,32 @@
+/* navbar.css */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 96px; /* 24rem */
+    padding: 0 32px; /* 8rem */
+    background-color: #FFFFFF;
+}
+
+.logo img {
+    width: 250px; /* 16rem */
+}
+
+ul {
+    display: flex;
+    gap: 40px; /* 10rem */
+    font-weight: 600; /* Semibold */
+    font-size: 18px; /* 1.125rem */
+}
+
+ul li {
+    list-style: none;
+    font-weight: 600; /* Apply font weight to li elements */
+    font-size: 18px; /* Apply font size to li elements */
+    color: #000000; /* Set text color */
+}
+
+ul li a {
+    text-decoration: none;
+    color: inherit;
+}

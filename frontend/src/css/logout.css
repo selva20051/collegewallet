@@ -1,0 +1,16 @@
+/* logout.css */
+button {
+    font-weight: 600; /* Semibold, same as menu items */
+    font-size: 18px; /* 1.125rem, same as menu items */
+    color: #000000; /* Same color as navbar items */
+    background-color: transparent; /* No background, matches text links */
+    border: none; /* Removes the default button border */
+    cursor: pointer; /* Makes the button appear clickable */
+    padding: 0; /* Remove padding to make it consistent with list items */
+    text-decoration: none; /* Consistent with link style */
+}
+
+/* Add hover effect for a better UX, similar to menu items */
+button:hover {
+    color: #FF033E; /* Example hover color */
+}
