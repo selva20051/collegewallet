@@ -5,12 +5,10 @@ import '../css/navbar.css';
 import Login from './loginbutton';
 import logo from '../assests/images/university-logo.png'
 
-function Navbar() {
-    const navigate = useNavigate();
+import { Link } from "react-router-dom"
+import "../css/navbar.css";
 
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    const username = localStorage.getItem('username');
-
+const Header = () => {
     return (
         <header className='flex justify-between items-center h-24  px-8'>
             <div className="logo">
