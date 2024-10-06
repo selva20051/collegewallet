@@ -1,29 +1,28 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Logout from './logout';
-import '../css/login.css';
 
-function Navbar() {
-    const navigate = useNavigate();
+import { Link } from "react-router-dom"
+import "../css/navbar.css";
 
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    const username = localStorage.getItem('username');
-
+const Header = () => {
     return (
-        <nav>
-            <ul>
-                <li><Link to="/">Home</Link></li>
-                {isAuthenticated ?  (
-                    <>
-                        <li>Welcome, {username}!</li>
-                        <li><Logout/></li>
-                    </>
-                ) : (
-                    <li><Link to="/login">Login</Link></li>
-                )}
-            </ul>
-        </nav>
-    );
-}
+        <header className="header">
+            <div className="logo">
+                <img src="Report.png" alt="Report" />
+            </div>
+            <div className="menu">
+                <ul>
+                    <Link to="/" ><li>Home</li></Link>
+                    <li> <Link to="/login" >
+                        <button>
+                            Login
+                        </button>
+                    </Link>
 
-export default Navbar;
+                    </li>
+                </ul>
+            </div>
+
+        </header>
+    );
+};
+
+export default Header;
