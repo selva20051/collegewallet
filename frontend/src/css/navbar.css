@@ -3,27 +3,36 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 96px; /* 24rem */
-    padding: 0 32px; /* 8rem */
+    height: 96px;
+    padding: 0 32px;
     background-color: #FFFFFF;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+}
+
 .logo img {
-    width: 250px; /* 16rem */
+    width: auto;
+    max-height: 80px;
+    object-fit: contain;
 }
 
 ul {
     display: flex;
-    gap: 40px; /* 10rem */
-    font-weight: 600; /* Semibold */
-    font-size: 18px; /* 1.125rem */
+    gap: 40px;
 }
 
+/* Apply the same styles as the buttons to the list items */
 ul li {
     list-style: none;
-    font-weight: 600; /* Apply font weight to li elements */
-    font-size: 18px; /* Apply font size to li elements */
-    color: #000000; /* Set text color */
+    font-weight: 600; /* Semibold */
+    font-size: 18px; /* Same as button */
+    color: #000000; /* Same color */
+    padding: 0;
+    text-decoration: none; /* No underline */
+    cursor: pointer; /* Make it appear clickable */
 }
 
 ul li a {
