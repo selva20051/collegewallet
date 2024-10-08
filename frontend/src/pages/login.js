@@ -1,5 +1,7 @@
 import { useState } from "react";
 import '../css/login.css';
+import Navbar from "./Navbar";
+
 
 import { useNavigate } from "react-router-dom";
 
@@ -43,6 +45,7 @@ function Login() {
 
     return (
         <div className="limiter">
+            <Navbar />
             <div className="container-login100">
                 <div className='wrap-login100'>
                     <form className="login100-form validate-form" onSubmit={handleSubmit}>

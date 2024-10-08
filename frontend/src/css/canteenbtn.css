@@ -7,8 +7,10 @@ button {
     cursor: pointer; 
     padding: 0; 
     text-decoration: none; 
+    transition: 0.3s ;
 }
 
 button:hover {
     color: #FF033E; 
+    text-decoration: dotted;
 }

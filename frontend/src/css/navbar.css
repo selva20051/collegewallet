@@ -6,6 +6,15 @@ header {
     height: 96px;
     padding: 0 32px;
     background-color: #FFFFFF;
+    position: relative;
+    border-bottom: 2px solid transparent; /* Hidden initially */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: border-bottom 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+header:hover {
+   
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
 }
 
 .logo {
@@ -17,6 +26,7 @@ header {
     width: auto;
     max-height: 80px;
     object-fit: contain;
+    mix-blend-mode: multiply;
 }
 
 ul {
@@ -24,8 +34,7 @@ ul {
     gap: 40px;
 }
 
-/* Apply the same styles as the buttons to the list items */
-ul li {
+ul li a{
     list-style: none;
     font-weight: 600; /* Semibold */
     font-size: 18px; /* Same as button */
@@ -38,4 +47,18 @@ ul li {
 ul li a {
     text-decoration: none;
     color: inherit;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+ul li a::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #df1919;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease-in-out;
 }

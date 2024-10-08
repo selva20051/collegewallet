@@ -1,11 +1,17 @@
+*{
+    font-family: "poppins";
+}
+
 img{
     margin-top: 0;
+    margin-bottom: 5px;
     height: 330px;
     width: 450px;
 }
 
+
 .balance button {
-    background-color: #ff69b4;;
+    background-color: #ff0000;;
     border: none;
     padding: 10px 20px;
     color: rgb(255, 255, 255);
@@ -22,9 +28,12 @@ img{
     height: 150px;
     width: 100%;
     margin-top: 70px;
+    font-family: "poppins";
 }
 
 .balcontain{
+    padding: 30px;
+    background: white;
     display: flex;
     justify-content: left;
     align-items: center;
@@ -34,6 +43,7 @@ img{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .canContainer {
+    background: white;
     margin: 70px;
     display: flex;
     align-items: center;

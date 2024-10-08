@@ -35,18 +35,18 @@ function Home() {
     };
 
     return (
-        <>
+        <div className="main">
             <Navbar />
             <div className="balance">
                 <div className="balcontain">
                     {isAuthenticated ? (
                         <div>
-                            <h1>Welcome, {username}!</h1>
-                            <p>Balance: {balance}</p>
+                            <h2>Welcome, {username}!</h2>
+                            <h2>Balance: {balance}</h2>
                             <button onClick={handleAddAmountClick}>Add Amount</button>
                         </div>
                     ) : (
-                        <p>Login First!!</p>
+                        <h2>Login First!!</h2>
                     )}
                 </div>
             </div>
@@ -91,7 +91,7 @@ function Home() {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }
 

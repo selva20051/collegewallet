@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import React from "react";
-import jsPDF from "jspdf";  
+import jsPDF from "jspdf";
 import '../css/menu.css';
-import 'jspdf-autotable';  
+import 'jspdf-autotable';
+import OrderCancelTimer from "./orderCancelTimer"; 
 
 const importAll = (r) => {
     let images = {};
@@ -22,8 +23,36 @@ function Menu() {
     const [balance, setBalance] = useState(500);
     const [cartItems, setCartItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [showPDFButton, setShowPDFButton] = useState(false); 
-    const [buyButtonVisible, setBuyButtonVisible] = useState(true); 
+    const [showPDFButton, setShowPDFButton] = useState(false);
+    const [buyButtonVisible, setBuyButtonVisible] = useState(true);
+    const [timerActive, setTimerActive] = useState(false);
+    const [timeRemaining, setTimeRemaining] = useState(300); // Set initial timer to 5 minutes
+    const [canCancelOrder, setCanCancelOrder] = useState(false); // State to track if order can be canceled
+    const [schedule, setSchedule] = useState(""); 
+
+    const handleScheduleChange = (event) => {
+        setSchedule(event.target.value); // Update the state when input changes
+    };
+    useEffect(() => {
+        let timer;
+        if (timerActive && timeRemaining > 0) {
+            setCanCancelOrder(true); // Allow cancellation while the timer is active
+            timer = setInterval(() => {
+                setTimeRemaining((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        setCanCancelOrder(false); // Disallow cancellation when timer finishes
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        } else {
+            setCanCancelOrder(false); // Disallow cancellation if timer is not active or finished
+        }
+
+        return () => clearInterval(timer); // Clear the timer on component unmount or if timerActive changes
+    }, [timerActive, timeRemaining]);
 
     const handleAddAmountClick = () => {
         setIsPopupOpen(true);
@@ -49,7 +78,6 @@ function Menu() {
             setCartItems([...cartItems, { ...menuItem, quantity: 1 }]);
         }
 
-       
         if (cartItems.length === 0) {
             setBuyButtonVisible(true);
         }
@@ -61,40 +89,35 @@ function Menu() {
             : item));
     };
 
-    
     const calculateTotal = () => {
+        // setBalance(cartItems.reduce((acc, item) => acc + (parseFloat(item.price.slice(1)) * item.quantity), 0).toFixed(2))
         return cartItems.reduce((acc, item) => acc + (parseFloat(item.price.slice(1)) * item.quantity), 0).toFixed(2);
     };
 
-    
     const handleBuy = () => {
-        setShowPDFButton(true);   
-        setBuyButtonVisible(false);  
+        if (calculateTotal() > balance) {
+            alert("Insufficient balance!");
+            return;
+        }
+        setBalance(balance - calculateTotal())
+        setShowPDFButton(true);
+        setBuyButtonVisible(false);
+        setTimerActive(true);
         alert("Your Order Is Placed");
     };
 
-    
     const handleDownloadPDF = () => {
         const doc = new jsPDF();
-
-        
-        const username = localStorage.getItem('username') || 'Customer';  
-
-        
+        const username = localStorage.getItem('username') || 'Customer';
         doc.setFontSize(18);
         doc.setFont("helvetica", "bold");
         doc.text("Order Summary", 105, 20, { align: 'center' });
-
-        
         doc.setLineWidth(0.5);
         doc.line(10, 25, 200, 25);
-
-        
         doc.setFontSize(12);
-        doc.text(`Order placed by: ${username}`, 10, 35);  
+        doc.text(`Order placed by: ${username}`, 10, 35);
         doc.text("Thank you for your order! Here is a summary of your purchase:", 10, 45);
 
-       
         const tableColumn = ["Item Name", "Quantity", "Price"];
         const tableRows = [];
 
@@ -114,19 +137,28 @@ function Menu() {
             head: [tableColumn],
             body: tableRows,
             theme: 'grid',
-            headStyles: { fillColor: [255, 0, 0] },  
+            headStyles: { fillColor: [255, 0, 0] },
             styles: { fontSize: 10, halign: 'center' },
-            footStyles: { fillColor: [0, 0, 0] },  
+            footStyles: { fillColor: [0, 0, 0] },
         });
 
         doc.text("We hope you enjoy your purchase!", 105, doc.lastAutoTable.finalY + 10, { align: 'center' });
-
         doc.save("order_summary.pdf");
 
         setCartItems([]);
         setShowPDFButton(false);
     };
 
+    const handleOrderCancelled = () => {
+        if (canCancelOrder) { // Check if the order can be canceled
+            alert("Your order has been cancelled!");
+            setTimerActive(false); // Stop the timer
+            setTimeRemaining(300); // Reset the timer
+            setCartItems([]); // Optionally reset the cart
+        } else {
+            alert("You cannot cancel the order as the time has expired."); // Notify user if cancellation is not allowed
+        }
+    };
 
     const menuItems = [
         { name: "Tea", image: "tea.jpg", price: "₹15" },
@@ -162,12 +194,12 @@ function Menu() {
                 <div className="balcontain">
                     {isAuthenticated ? (
                         <div>
-                            <h1>Welcome, {username}!</h1>
-                            <p>Balance: {balance}</p>
+                            <h2>Welcome, {username}!</h2>
+                            <h2>Balance: {balance}</h2>
                             <button onClick={handleAddAmountClick}>Add Amount</button>
                         </div>
                     ) : (
-                        <p>Login First!!</p>
+                        <h2>Login First!!</h2>
                     )}
                 </div>
             </div>
@@ -206,31 +238,46 @@ function Menu() {
                 </div>
             )}
 
-            <div className="cart">
-                <h2>Your Cart</h2>
-                {cartItems.length > 0 ? (
-                    <>
-                        {cartItems.map((item, index) => (
-                            <div key={index} className="cart-item">
-                                <h4>{item.name} x {item.quantity}</h4>
+            <div className="foot">
+            <div className="sche">
+                <h2>Schedule your order</h2>
+                <h4>At time: <input type="time" value={schedule} onChange={handleScheduleChange}></input></h4>
+                <button type="submit" onClick={() => console.log(schedule)}>Schedule Order</button>
+            </div>
+
+                <div className="cart">
+                    <h2>Your Cart</h2>
+                    {cartItems.length > 0 ? (
+                        <>
+                            {cartItems.map((item, index) => (
+                                <div key={index} className="cart-item">
+                                    <h4>{item.name} x {item.quantity}</h4>
+                                </div>
+                            ))}
+                            <div className="total-to-pay">
+                                <span>To Pay:</span>
+                                <span>₹{calculateTotal()}</span>
                             </div>
-                        ))}
-                        <div className="total-to-pay">
-                            <span>To Pay:</span>
-                            <span>₹{calculateTotal()}</span>
-                        </div>
-                        {buyButtonVisible && (
-                            <button className="buy-button" onClick={handleBuy}>Buy</button>
-                        )}
-                        {showPDFButton && (
-                            <button className="download-pdf" onClick={handleDownloadPDF}>Download INVOICE</button>
-                        )}
-                    </>
-                ) : (
-                    <p>No items in the cart</p>
-                )}
+                            {buyButtonVisible && (
+                                <button className="buy-button" onClick={handleBuy}>Buy</button>
+                            )}
+                            {showPDFButton && (
+                                <button className="download-pdf" onClick={handleDownloadPDF}>Download INVOICE</button>
+                            )}
+                        </>
+                    ) : (
+                        <p>No items in the cart</p>
+                    )}
+                </div>
+
+                <div className="sche">
+                    <h2>Order Cancel Timer</h2>
+                    <OrderCancelTimer timeRemaining={timeRemaining} onCancelOrder={handleOrderCancelled} />
+                </div>
+
             </div>
         </>
+
     );
 }
 

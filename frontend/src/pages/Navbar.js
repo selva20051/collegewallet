@@ -5,7 +5,7 @@ import '../css/navbar.css';
 import Login from './loginbutton';
 import Menubtn from './menubutton';
 import Canteenbtn from './canteenbutton';
-import logo from '../assests/images/university-logo.png'
+import logo from '../assests/images/logo.png'
 
 const Navbar = () => {
     const navigate = useNavigate();
